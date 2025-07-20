@@ -1,102 +1,122 @@
-# Fake News Detection using RoBERTa
+# Fake News Detection Using RoBERTa and NLP
 
-This project uses a fine-tuned RoBERTa transformer model to detect fake news articles. The dataset is sourced from Kaggle’s “Fake and Real News Dataset”. The notebook walks through preprocessing, tokenization, model training, evaluation, and finally provides a simple Streamlit-based web app for real-time inference.
+This project fine-tunes a RoBERTa transformer model to classify news articles as real or fake using the Fake-and-Real-News dataset from Kaggle. It applies Natural Language Processing (NLP) techniques to clean, tokenize, and vectorize text before feeding it to a binary classification model. A lightweight Streamlit app is included for real-time inference.
 
-⸻
+---
 
-# Dataset
+## Goal
 
-The dataset consists of news articles labeled as either fake or real, with features including:
-	• title: The headline of the news article
-	• text: The full body of the news article
-	• subject: Topic category (e.g., politics, world news)
-	• date: Publication date
-	• label: Ground truth classification (1 for fake, 0 for real)
+The goal of this project is to build an end-to-end pipeline for detecting misinformation using a pre-trained transformer model. It explores how deep NLP models like RoBERTa can be applied to real-world fake news datasets, and provides a simple interface for testing predictions interactively.
 
-⸻
+---
 
-# Requirements
+## Features
+
+- Loads and cleans labeled news data from Kaggle
+- Combines headlines and article body for richer input context
+- Fine-tunes a RoBERTa transformer on binary classification (real vs fake)
+- Evaluates with accuracy, F1 score, and confusion matrix
+- Saves the model and tokenizer for reuse
+- Deploys a simple inference tool via Streamlit (`app.py`)
+- Enables user-input predictions in real time
+
+---
+
+## Requirements
 
 This project uses the following Python libraries:
-	• pandas
-	• scikit-learn
-	• matplotlib
-	• seaborn
-	• torch
-	• transformers
-	• streamlit
+- pandas (for data processing)
+- scikit-learn (for metrics and preprocessing)
+- torch (PyTorch backend for model training)
+- transformers (Hugging Face RoBERTa implementation)
+- matplotlib and seaborn (for evaluation plots)
+- streamlit (for model testing UI)
 
-Note: To install the required libraries, you can run:
+Install the required libraries with:
 
+```bash
 pip install -r requirements.txt
+```
 
+---
 
-⸻
+## Project Structure
 
-# Project Structure
+```plaintext
+  FakeNewsDetection/
+├── fakenewsprime.ipynb
+├── app.py
+└── README.md 
+```      
 
-FakeNewsDetection/
-├── FakeNews_RoBERTa.ipynb     # Jupyter Notebook with full training pipeline
-├── app.py                     # Streamlit app for model inference
-├── model/                     # Directory containing the saved model/tokenizer
-├── requirements.txt           # All dependencies
-└── images/
-    └── confusion_matrix.png   # Sample evaluation plot
+---
 
+## How It Works
 
-⸻
+1. Data Loading:
+   - Loads the "Fake and Real News" dataset from Kaggle.
+   - Combines title and text columns for better semantic context.
 
-# Steps
-	1. Data Loading: Load the Kaggle Fake and Real News dataset.
-	2. Data Cleaning: Remove duplicates, nulls, and unnecessary columns.
-	3. Preprocessing:
-		• Combine title and text for richer context.
-		• Encode labels and shuffle data.
-	4. Tokenization:
-		• Use Hugging Face’s tokenizer for RoBERTa.
-	5. Model Training:
-		• Fine-tune RoBERTa on binary classification (fake vs real).
-		• Use GPU acceleration if available.
-	6. Model Evaluation:
-		• Evaluate using accuracy, F1-score, and confusion matrix.
-	7. Deployment:
-		• Streamlit app (app.py) to load the trained model and allow users to test custom news headlines/text.
+2. Preprocessing:
+   - Removes null values and unnecessary columns.
+   - Shuffles and encodes labels (`0` for real, `1` for fake).
 
-⸻
+3. Tokenization:
+   - Uses RoBERTa tokenizer from Hugging Face Transformers.
+   - Converts news text to input IDs and attention masks.
 
-# Code Explanation
-	• Jupyter Notebook: Handles all training steps from data exploration to model evaluation.
-	• app.py: A simple UI that accepts user input and classifies news as real or fake.
-	• model/: Stores the trained model and tokenizer for reuse.
+4. Model Training:
+   - Fine-tunes RoBERTa on the dataset using binary cross-entropy loss.
+   - Utilizes GPU if available for faster convergence.
 
-⸻
+5. Evaluation:
+   - Computes accuracy, F1-score, and plots a confusion matrix.
+   - Saves trained model and tokenizer.
 
-# Results
+6. Deployment:
+   - app.py loads the trained model and runs a Streamlit interface.
+   - Users can input news headlines or full articles to get predictions.
 
-The model achieved the following on the test set:
-	• Accuracy: 92.5%
-	• F1 Score: 0.93
-	• Confusion matrix:
+---
 
+## Code Highlights
 
-⸻
+- `transformers.RobertaTokenizer` and `RobertaForSequenceClassification`: Used for tokenization and model architecture.
+- `Trainer` and `TrainingArguments`: Simplify fine-tuning setup.
+- `sklearn.metrics.f1_score`: Evaluates model on test data.
+- `streamlit.text_input()` + `model.predict()`: Enables real-time testing.
 
-# Future Improvements
-	• Add explainability tools like SHAP or LIME to interpret predictions.
-	• Expand to multiclass classification with subject prediction.
-	• Train on multilingual datasets for broader generalization.
-	• Integrate a news feed for live classification.
-	• Containerize with Docker for easier deployment.
+---
 
-⸻
+## Sample Output
 
-# Conclusion
+```plaintext
+Training complete.
+Validation Accuracy: 92.5%
+F1 Score: 0.93
 
-This project demonstrates how transformer models like RoBERTa can be fine-tuned for fake news detection. With a real-world dataset and a live inference app, it showcases the pipeline from raw data to deployable model.
+Enter news headline or article:
+> The government launches new economic reform bill.
 
-⸻
+Prediction: REAL NEWS ✅
+```
 
-# Author
+## To tun the Streamlit app:
 
-Diego Acosta
+```bash
+streamlit run app.py
+```
 
+You have to make sure the model and the tokenizer are in the correct model / directory.
+
+---
+
+## Conclusion
+
+This project demonstrates how transformer-based NLP models can be fine-tuned for misinformation detection. With a clean dataset, effective preprocessing, and powerful language modeling, RoBERTa achieves strong performance on binary classification. The Streamlit interface provides a quick way to test and visualize results, making the model useful for education, journalism, or security research.
+
+---
+
+## Author
+
+Diego Acosta - Dycouzt
