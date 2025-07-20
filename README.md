@@ -51,6 +51,10 @@ pip install -r requirements.txt
 
 ---
 
+## Dataset
+
+fake-and-real-news-dataset.csv
+
 ## How It Works
 
 1. Data Loading:
